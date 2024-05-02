@@ -1,16 +1,24 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  color: "#ba0d7b",
+  color: "#4834d4",
+  appBackground: {
+    backgroundColor: "#4834d4",
+  },
+  headerTitle: {
+    backgroundColor: "#686de0",
+    height: 110,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#4834d4",
     justifyContent: "center",
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
+    color: "white",
   },
   input: {
     borderColor: "#ba0d7b",
@@ -45,22 +53,30 @@ export default StyleSheet.create({
   button: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 22,
+    paddingHorizontal: 82,
     borderRadius: 4,
     elevation: 3,
     backgroundColor: "black",
-    maxWidth: 150,
     alignSelf: "center",
   },
   text: {
-    fontSize: 20,
-    lineHeight: 21,
+    fontSize: 25,
     fontWeight: "bold",
-    letterSpacing: 0.25,
+    letterSpacing: 3,
     color: "white",
   },
   logo: {
+    alignSelf: "center",
+  },
+  validateButton: {
+    marginTop: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 30,
+    paddingHorizontal: 80,
+    borderRadius: 4,
+    backgroundColor: "green",
     alignSelf: "center",
   },
 });

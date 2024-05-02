@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { View, Image, Text, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import style from "../style";
 
 export default function Result({ navigation }) {
+    const [score, setScore] = useState(null);
   const getScore = async () => {
     try {
       const value = await AsyncStorage.getItem("score");

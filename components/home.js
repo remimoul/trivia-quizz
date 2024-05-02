@@ -7,14 +7,6 @@ export default function Home({ navigation }) {
   const [difficulty, setDifficulty] = useState("easy");
 
   const startGame = () => {
-    // fetch(
-    //   `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error) => console.error(error));
     navigation.navigate("Category", { difficulty: difficulty });
   };
 
@@ -24,7 +16,7 @@ export default function Home({ navigation }) {
 
       <Picker
         selectedValue={difficulty}
-        onValueChange={(itemValue, itemIndex) => setDifficulty(itemValue)}
+        onValueChange={(itemValue) => setDifficulty(itemValue)}
       >
         <Picker.Item label="Facile" value="easy" />
         <Picker.Item label="Moyen" value="medium" />
