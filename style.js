@@ -1,13 +1,17 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  color: "#4834d4",
+  color: "#e67e22",
   appBackground: {
     backgroundColor: "#4834d4",
   },
   headerTitle: {
     backgroundColor: "#686de0",
-    height: 110,
+    height: '100%',
+  },
+  tabBar: {
+    backgroundColor: "#686de0",
+    height: 100,
   },
   container: {
     flex: 1,
@@ -19,6 +23,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "white",
+    marginBottom: 20,
   },
   input: {
     borderColor: "#ba0d7b",
@@ -42,13 +47,14 @@ export default StyleSheet.create({
   answer: {
     fontSize: 15,
     borderColor: "black",
-    borderWidth: 2,
+    borderWidth: 4,
     padding: 10,
     marginTop: 10,
     borderRadius: 5,
+    backgroundColor: "white",
   },
   containerQuestion: {
-    margin: 15,
+   margin: 20,
   },
   button: {
     alignItems: "center",
@@ -78,5 +84,16 @@ export default StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "green",
     alignSelf: "center",
+  },
+  infoGame: {
+    color: "white",
+    fontSize: 17,
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  scoreStyle: {
+    color: "#f1c40f",
+    fontSize: 30,
+    fontWeight: "bold",
   },
 });

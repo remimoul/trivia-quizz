@@ -17,6 +17,7 @@ export default function Gameview({ route }) {
   const [loading, setLoading] = useState(true);
 
   // Permet de mélanger les réponses pour ne pas avoir la bonne réponse en dernier en utilisant l'algorithme de Fisher-Yates
+  // https://www.youtube.com/watch?v=60A-G7irEqI
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -67,12 +68,12 @@ export default function Gameview({ route }) {
     setSelectedAnswer(null); 
   };
 
-  const handleCancel = () => {
+  const dialogClose = () => {
     setDialogVisible(false);
 
   };
 
-  const handleCorrectCancel = () => {
+  const dialogCorrectClose = () => {
     setCorrectDialogVisible(false);
   };
 
@@ -82,11 +83,11 @@ export default function Gameview({ route }) {
       {questions && currentQuestion < questions.length ? (
         <View style={style.containerQuestion}>
           <Text style={style.title}>Question n° {currentQuestion + 1}</Text>
-          <Text style={style.info}>{decode(questions[currentQuestion].category)}</Text>
-          <Text style={style.info}>
-            Difficulté : {decode(questions[currentQuestion].difficulty)}
-          </Text>
-          <Text style={style.info}>Score : {score}</Text>
+
+          <Text style={style.infoGame}>{decode(questions[currentQuestion].category)}</Text>
+          <Text style={style.infoGame}>Level : {decode(questions[currentQuestion].difficulty)}</Text>
+          <Text style={style.infoGame}>Score : <Text style={style.scoreStyle}>{score}</Text> </Text>
+
           {/* Affichage de la question */}
           <Text style={style.question}>
             {decode(questions[currentQuestion].question)}
@@ -94,7 +95,7 @@ export default function Gameview({ route }) {
           {/* Affichage des réponses */}
           {questions[currentQuestion].answers.map((answer, index) => (
             <TouchableOpacity
-              style={[style.answer, selectedAnswer === answer && { borderColor: "green" }]}
+              style={[style.answer, selectedAnswer === answer && { borderColor: "green",backgroundColor:"green" }]}
               key={index}
               onPress={() => handleAnswer(answer)}
             >
@@ -123,7 +124,7 @@ export default function Gameview({ route }) {
         <Dialog.Description>
           +10 points
         </Dialog.Description>
-        <Dialog.Button label="OK" onPress={handleCorrectCancel} />
+        <Dialog.Button label="OK" onPress={dialogCorrectClose} />
       </Dialog.Container>
 
 <Dialog.Container visible={dialogVisible}>
@@ -131,7 +132,7 @@ export default function Gameview({ route }) {
         <Dialog.Description>
           La bonne réponse était : {correctAnswer ? decode(correctAnswer) : ""}
         </Dialog.Description>
-        <Dialog.Button label="OK" onPress={handleCancel} />
+        <Dialog.Button label="OK" onPress={dialogClose} />
       </Dialog.Container>
     </SafeAreaView>
   );

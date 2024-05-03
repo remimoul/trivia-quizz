@@ -37,7 +37,7 @@ export default function Category({ navigation, route }) {
 
   return (
     <>
-      <SafeAreaView style={style.headerTitle}>
+      <SafeAreaView style={style.appBackground}>
         <Text style={style.title}>Choississez une categorie</Text>
       </SafeAreaView>
       <FlatList

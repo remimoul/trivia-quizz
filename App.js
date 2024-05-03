@@ -24,16 +24,13 @@ function TabNavigator() {
           else if (route.name === "About") name = "question";
           else if (route.name === "Résultat") name = "trophy";
 
-          return <FontAwesome name={name} size={20} color={color} />;
+          return <FontAwesome name={name} size={35} color={style.color} />;
         },
         tabBarActiveTintColor: "#ba0d7b",
         tabBarInactiveTintColor: "#333333",
-        tabBarStyle: style.headerTitle,
-        tabBarLabelStyle: {
-          fontSize: 15,
-          fontWeight: "bold",
-        },
+        tabBarStyle: style.tabBar,
       })}
+      tabBarOptions={{ showLabel: false }}
     >
       <Tab.Screen options={{ headerShown: false }}  name="Accueil" component={Home} />
       <Tab.Screen options={{ headerShown: false }}  name="Résultat" component={Result} />
