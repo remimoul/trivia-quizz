@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity,Alert } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity,Button} from "react-native";
 import style from "../style.js";
 import { decode } from "he";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Dialog from "react-native-dialog";
+import { FontAwesome } from '@expo/vector-icons';
+import { PieChart } from 'react-native-svg-charts';
 
-export default function Gameview({ route }) {
+export default function Gameview({ route,navigation }) {
   const { difficulty, id } = route.params;
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogStopVisible, setDialogStopVisible] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [correctDialogVisible, setCorrectDialogVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const dataPieChart = [
+    {
+      key: 1,
+      value: score,
+      svg: { fill: '#009432' },
+    },
+    {
+      key: 2,
+      value: 100 - score,
+      svg: { fill: '#a0a0a0' },
+    },
+  ];
 
   // Permet de mélanger les réponses pour ne pas avoir la bonne réponse en dernier en utilisant l'algorithme de Fisher-Yates
   // https://www.youtube.com/watch?v=60A-G7irEqI
@@ -32,11 +48,16 @@ export default function Gameview({ route }) {
     )
       .then((response) => response.json())
       .then((json) => {
-        const questions = json.results.map((question) => ({
+        if (Array.isArray(json.results)){
+            const questions = json.results.map((question) => ({
           ...question,
           answers: shuffleArray([...question.incorrect_answers, question.correct_answer]),
         }));
         setQuestions(questions);
+        } else {
+          console.error('Unexpected data structure:', json);
+        }
+      
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -77,12 +98,35 @@ export default function Gameview({ route }) {
     setCorrectDialogVisible(false);
   };
 
+  const exitConfirm = () => {
+    navigation.navigate('Accueil');
+    setDialogStopVisible(false);
+  };
+
+  const showDialogStop = () => {
+    setDialogStopVisible(true);
+  };
+
+  const dialogStopClose = () => {
+    setDialogStopVisible(false);
+  };
 
   return (
     <SafeAreaView style={style.headerTitle}>
       {questions && currentQuestion < questions.length ? (
         <View style={style.containerQuestion}>
-          <Text style={style.title}>Question n° {currentQuestion + 1}</Text>
+          <View style={style.containerNumQuestion}>
+     <Text style={style.title}>Question n° {currentQuestion + 1}</Text>
+          <TouchableOpacity onPress={showDialogStop} style={{ marginRight: 20 }}>
+              <FontAwesome name="stop" size={35} color="red" />
+          </TouchableOpacity> 
+          <Dialog.Container visible={dialogStopVisible}>
+        <Dialog.Title>Retour à l'Accueil ?​</Dialog.Title>
+        <Dialog.Button label="Non" onPress={dialogStopClose} />
+        <Dialog.Button label="Oui" onPress={exitConfirm} />
+      </Dialog.Container>
+          </View>
+     
 
           <Text style={style.infoGame}>{decode(questions[currentQuestion].category)}</Text>
           <Text style={style.infoGame}>Level : {decode(questions[currentQuestion].difficulty)}</Text>
@@ -95,7 +139,7 @@ export default function Gameview({ route }) {
           {/* Affichage des réponses */}
           {questions[currentQuestion].answers.map((answer, index) => (
             <TouchableOpacity
-              style={[style.answer, selectedAnswer === answer && { borderColor: "green",backgroundColor:"green" }]}
+              style={[style.answer, selectedAnswer === answer && { backgroundColor:"green" }]}
               key={index}
               onPress={() => handleAnswer(answer)}
             >
@@ -115,7 +159,8 @@ export default function Gameview({ route }) {
       ) : (
         <View>
           <Text style={style.title}>Résultats</Text>
-          <Text>Votre score est: {score} /100</Text>
+          <PieChart style={style.pieChart} data={dataPieChart} />
+          <Text style={style.containerResult}>Votre score : {score} /100</Text>
         </View>
       )}
 

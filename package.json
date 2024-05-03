@@ -21,7 +21,9 @@
     "npx": "^10.2.2",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "react-native-dialog": "^9.3.0"
+    "react-native-dialog": "^9.3.0",
+    "react-native-svg": "^15.2.0",
+    "react-native-svg-charts": "^5.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

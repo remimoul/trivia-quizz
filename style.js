@@ -96,4 +96,19 @@ export default StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
+  containerNumQuestion: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  pieChart: {
+    height: 300,
+    marginTop: 80,
+  },
+  containerResult: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "white",
+    textAlign: "center",
+    marginTop: 50,
+  },
 });
