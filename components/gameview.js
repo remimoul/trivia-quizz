@@ -5,6 +5,7 @@ import { decode } from "he";
 import Dialog from "react-native-dialog";
 import { FontAwesome } from '@expo/vector-icons';
 import Result from './result';
+import { CorrectAnswerDialog,IncorrectAnswerDialog,StopDialog } from "./dialogs.js";
 
 export default function Gameview({ route,navigation }) {
   const { difficulty, id } = route.params;
@@ -28,6 +29,8 @@ export default function Gameview({ route,navigation }) {
     return array;
   };
 
+  // Permet de récupérer les questions en fonction de la catégorie et de la difficulté
+
   useEffect(() => {
     fetch(
       `https://opentdb.com/api.php?amount=10&category=${id}&difficulty=${difficulty}&type=multiple`
@@ -50,11 +53,13 @@ export default function Gameview({ route,navigation }) {
   }, []);
 
 
-
+// Permet de gérer la réponse sélectionnée par l'utilisateur
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
     setCorrectAnswer(null); 
   };
+
+  // Permet de valider la réponse et de passer à la question suivante
 
   const validateAnswer = () => {
     if (selectedAnswer === questions[currentQuestion].correct_answer) {
@@ -68,6 +73,8 @@ export default function Gameview({ route,navigation }) {
     setSelectedAnswer(null); 
   };
 
+  // Alertdialog pour les bonnes et mauvaises réponses
+
   const dialogClose = () => {
     setDialogVisible(false);
 
@@ -76,6 +83,8 @@ export default function Gameview({ route,navigation }) {
   const dialogCorrectClose = () => {
     setCorrectDialogVisible(false);
   };
+
+  // Alertdialog pour ouvrir et fermer la sortie de jeu
 
   const exitConfirm = () => {
     navigation.navigate('Accueil');
@@ -99,11 +108,7 @@ export default function Gameview({ route,navigation }) {
           <TouchableOpacity onPress={showDialogStop} style={{ marginRight: 20 }}>
               <FontAwesome name="stop" size={35} color="red" />
           </TouchableOpacity> 
-          <Dialog.Container visible={dialogStopVisible}>
-        <Dialog.Title>Retour à l'Accueil ?​</Dialog.Title>
-        <Dialog.Button label="Non" onPress={dialogStopClose} />
-        <Dialog.Button label="Oui" onPress={exitConfirm} />
-      </Dialog.Container>
+      <StopDialog visible={dialogStopVisible} onClose={dialogStopClose} onExit={exitConfirm} />
           </View>
      
 
@@ -139,21 +144,17 @@ export default function Gameview({ route,navigation }) {
         <Result score={score}></Result>
       )}
 
-<Dialog.Container visible={correctDialogVisible}>
-        <Dialog.Title>Bonne réponse 🥳​</Dialog.Title>
-        <Dialog.Description>
-          +10 points
-        </Dialog.Description>
-        <Dialog.Button label="OK" onPress={dialogCorrectClose} />
-      </Dialog.Container>
 
-<Dialog.Container visible={dialogVisible}>
-        <Dialog.Title>Mauvaise réponse 🙄​</Dialog.Title>
-        <Dialog.Description>
-          La bonne réponse était : {correctAnswer ? decode(correctAnswer) : ""}
-        </Dialog.Description>
-        <Dialog.Button label="OK" onPress={dialogClose} />
-      </Dialog.Container>
+<CorrectAnswerDialog
+  visible={correctDialogVisible}
+  onClose={dialogCorrectClose}
+/>
+
+<IncorrectAnswerDialog
+  visible={dialogVisible}
+  onClose={dialogClose}
+  correctAnswer={correctAnswer ? decode(correctAnswer) : ""}
+/>
     </SafeAreaView>
   );
 }
