@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import Home from "./components/home";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,10 +6,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import Category from "./components/category";
 import Gameview from "./components/gameview";
 import style from "./style";
+import About from "./components/about";
+import { LogBox } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+
+LogBox.ignoreLogs(['Warning: ViewPropTypes']);
 
 function TabNavigator() {
   return (
@@ -32,7 +35,7 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen options={{ headerShown: false }}  name="Accueil" component={Home} />
-      <Tab.Screen options={{ headerShown: false }}  name="About" component={View} />
+      <Tab.Screen options={{ headerShown: false }}  name="About" component={About} />
     </Tab.Navigator>
   );
 }

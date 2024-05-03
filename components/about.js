@@ -7,7 +7,7 @@ export default function About() {
 
   return (
     <View>
-    <Text style={style.title}>About</Text>
+    <Text>About</Text>
   </View>
   );
 }
