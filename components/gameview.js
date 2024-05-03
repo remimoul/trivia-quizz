@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity} from "react-native";
-import style from "../style.js";
-import { decode } from "he";
-import Dialog from "react-native-dialog";
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import style from '../style.js';
+import { decode } from 'he';
 import { FontAwesome } from '@expo/vector-icons';
 import Result from './result';
-import { CorrectAnswerDialog,IncorrectAnswerDialog,StopDialog } from "./dialogs.js";
+import { CorrectAnswerDialog, IncorrectAnswerDialog, StopDialog } from './dialogs.js';
 
-export default function Gameview({ route,navigation }) {
+export default function Gameview({ route, navigation }) {
   const { difficulty, id } = route.params;
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -33,30 +32,28 @@ export default function Gameview({ route,navigation }) {
 
   useEffect(() => {
     fetch(
-      `https://opentdb.com/api.php?amount=10&category=${id}&difficulty=${difficulty}&type=multiple`
+      `https://opentdb.com/api.php?amount=10&category=${id}&difficulty=${difficulty}&type=multiple`,
     )
       .then((response) => response.json())
       .then((json) => {
-        if (Array.isArray(json.results)){
-            const questions = json.results.map((question) => ({
-          ...question,
-          answers: shuffleArray([...question.incorrect_answers, question.correct_answer]),
-        }));
-        setQuestions(questions);
+        if (Array.isArray(json.results)) {
+          const questions = json.results.map((question) => ({
+            ...question,
+            answers: shuffleArray([...question.incorrect_answers, question.correct_answer]),
+          }));
+          setQuestions(questions);
         } else {
           console.error('Unexpected data structure:', json);
         }
-      
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
 
-
-// Permet de gérer la réponse sélectionnée par l'utilisateur
+  // Permet de gérer la réponse sélectionnée par l'utilisateur
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
-    setCorrectAnswer(null); 
+    setCorrectAnswer(null);
   };
 
   // Permet de valider la réponse et de passer à la question suivante
@@ -65,19 +62,18 @@ export default function Gameview({ route,navigation }) {
     if (selectedAnswer === questions[currentQuestion].correct_answer) {
       setScore(score + 10);
       setCorrectDialogVisible(true);
-    }else{
+    } else {
       setDialogVisible(true);
       setCorrectAnswer(questions[currentQuestion].correct_answer);
     }
     setCurrentQuestion(currentQuestion + 1);
-    setSelectedAnswer(null); 
+    setSelectedAnswer(null);
   };
 
   // Alertdialog pour les bonnes et mauvaises réponses
 
   const dialogClose = () => {
     setDialogVisible(false);
-
   };
 
   const dialogCorrectClose = () => {
@@ -104,26 +100,31 @@ export default function Gameview({ route,navigation }) {
       {questions && currentQuestion < questions.length ? (
         <View style={style.containerQuestion}>
           <View style={style.containerNumQuestion}>
-     <Text style={style.title}>Question n° {currentQuestion + 1}</Text>
-          <TouchableOpacity onPress={showDialogStop} style={{ marginRight: 20 }}>
+            <Text style={style.title}>Question n° {currentQuestion + 1}</Text>
+            <TouchableOpacity onPress={showDialogStop} style={{ marginRight: 20 }}>
               <FontAwesome name="stop" size={35} color="red" />
-          </TouchableOpacity> 
-      <StopDialog visible={dialogStopVisible} onClose={dialogStopClose} onExit={exitConfirm} />
+            </TouchableOpacity>
+            <StopDialog
+              visible={dialogStopVisible}
+              onClose={dialogStopClose}
+              onExit={exitConfirm}
+            />
           </View>
-     
 
           <Text style={style.infoGame}>{decode(questions[currentQuestion].category)}</Text>
-          <Text style={style.infoGame}>Level : {decode(questions[currentQuestion].difficulty)}</Text>
-          <Text style={style.infoGame}>Score : <Text style={style.scoreStyle}>{score}</Text> </Text>
+          <Text style={style.infoGame}>
+            Level : {decode(questions[currentQuestion].difficulty)}
+          </Text>
+          <Text style={style.infoGame}>
+            Score : <Text style={style.scoreStyle}>{score}</Text>{' '}
+          </Text>
 
           {/* Affichage de la question */}
-          <Text style={style.question}>
-            {decode(questions[currentQuestion].question)}
-          </Text>
+          <Text style={style.question}>{decode(questions[currentQuestion].question)}</Text>
           {/* Affichage des réponses */}
           {questions[currentQuestion].answers.map((answer, index) => (
             <TouchableOpacity
-              style={[style.answer, selectedAnswer === answer && { backgroundColor:"green" }]}
+              style={[style.answer, selectedAnswer === answer && { backgroundColor: 'green' }]}
               key={index}
               onPress={() => handleAnswer(answer)}
             >
@@ -132,10 +133,7 @@ export default function Gameview({ route,navigation }) {
           ))}
 
           {selectedAnswer && (
-            <TouchableOpacity
-              style={style.validateButton}
-              onPress={validateAnswer}
-            >
+            <TouchableOpacity style={style.validateButton} onPress={validateAnswer}>
               <Text style={style.text}>Valider</Text>
             </TouchableOpacity>
           )}
@@ -144,17 +142,12 @@ export default function Gameview({ route,navigation }) {
         <Result score={score}></Result>
       )}
 
-
-<CorrectAnswerDialog
-  visible={correctDialogVisible}
-  onClose={dialogCorrectClose}
-/>
-
-<IncorrectAnswerDialog
-  visible={dialogVisible}
-  onClose={dialogClose}
-  correctAnswer={correctAnswer ? decode(correctAnswer) : ""}
-/>
+      <CorrectAnswerDialog visible={correctDialogVisible} onClose={dialogCorrectClose} />
+      <IncorrectAnswerDialog
+        visible={dialogVisible}
+        onClose={dialogClose}
+        correctAnswer={correctAnswer ? decode(correctAnswer) : ''}
+      />
     </SafeAreaView>
   );
 }
