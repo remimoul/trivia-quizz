@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import style from '../style.js';
 import { decode } from 'he';
 import { FontAwesome } from '@expo/vector-icons';
@@ -49,6 +49,14 @@ export default function Gameview({ route, navigation }) {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
+  // Permet de gérer le chargement de la page
+  if (loading) {
+    return (
+      <SafeAreaView style={style.loading}>
+        <ActivityIndicator size="large" color="#fbc531" />
+      </SafeAreaView>
+    );
+  }
 
   // Permet de gérer la réponse sélectionnée par l'utilisateur
   const handleAnswer = (answer) => {

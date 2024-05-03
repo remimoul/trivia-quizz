@@ -10,7 +10,8 @@ export default function Category({ navigation, route }) {
   useEffect(() => {
     fetch('https://opentdb.com/api_category.php')
       .then((response) => response.json())
-      .then((data) => {setCategories(data.trivia_categories);
+      .then((data) => {
+        setCategories(data.trivia_categories);
         setLoading(false);
       })
       .catch((error) => console.error(error));
