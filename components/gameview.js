@@ -67,13 +67,16 @@ export default function Gameview({ route, navigation }) {
   // Permet de valider la réponse et de passer à la question suivante
 
   const validateAnswer = () => {
+    // Permet de vérifier si la réponse est correcte
     if (selectedAnswer === questions[currentQuestion].correct_answer) {
       setScore(score + 10);
       setCorrectDialogVisible(true);
     } else {
+      // Permet d'afficher la bonne réponse si la réponse est incorrecte
       setDialogVisible(true);
       setCorrectAnswer(questions[currentQuestion].correct_answer);
     }
+    // Permet de passer à la question suivante
     setCurrentQuestion(currentQuestion + 1);
     setSelectedAnswer(null);
   };
