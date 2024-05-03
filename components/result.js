@@ -1,34 +1,32 @@
-import React, { useEffect,useState } from "react";
-import { View, Image, Text, Pressable } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import { View, Text, TouchableOpacity} from "react-native";
 import style from "../style";
+import { PieChart } from 'react-native-svg-charts';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Result({ navigation }) {
-    const [score, setScore] = useState(null);
-  const getScore = async () => {
-    try {
-      const value = await AsyncStorage.getItem("score");
-      if (value !== null) {
-        return JSON.parse(value);
-      }
-    } catch (e) {
-      // error reading value
-      console.error(e);
-    }
-  };
-
-  useEffect(() => {
-    const fetchScore = async () => {
-      const score = await getScore();
-      console.log(score); // Do something with the score
-    };
-
-    fetchScore();
-  }, []);
+export default function Result({ score}) {
+  const navigation = useNavigation();
+  const dataPieChart = [
+    {
+      key: 1,
+      value: score,
+      svg: { fill: '#009432' },
+    },
+    {
+      key: 2,
+      value: 100 - score,
+      svg: { fill: '#a0a0a0' },
+    },
+  ];
 
   return (
-    <View style={style.container}>
-      <Text>Score: {score}</Text>
-    </View>
+    <View>
+    <Text style={style.title}>Résultats</Text>
+    <PieChart style={style.pieChart} data={dataPieChart} />
+    <Text style={style.containerResult}>Votre score : {score} /100</Text>
+    <TouchableOpacity title="Rejouer" style={style.validateButton} onPress={() => navigation.navigate('Accueil')} >
+      <Text style={style.text}>Rejouer</Text>
+       </TouchableOpacity>
+  </View>
   );
 }

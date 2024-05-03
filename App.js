@@ -6,7 +6,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import Category from "./components/category";
 import Gameview from "./components/gameview";
-import Result from "./components/result";
 import style from "./style";
 
 const Tab = createBottomTabNavigator();
@@ -29,11 +28,10 @@ function TabNavigator() {
         tabBarActiveTintColor: "#ba0d7b",
         tabBarInactiveTintColor: "#333333",
         tabBarStyle: style.tabBar,
+        tabBarShowLabel: false,
       })}
-      tabBarOptions={{ showLabel: false }}
     >
       <Tab.Screen options={{ headerShown: false }}  name="Accueil" component={Home} />
-      <Tab.Screen options={{ headerShown: false }}  name="Résultat" component={Result} />
       <Tab.Screen options={{ headerShown: false }}  name="About" component={View} />
     </Tab.Navigator>
   );

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, TouchableOpacity,Button} from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity} from "react-native";
 import style from "../style.js";
 import { decode } from "he";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Dialog from "react-native-dialog";
 import { FontAwesome } from '@expo/vector-icons';
-import { PieChart } from 'react-native-svg-charts';
+import Result from './result';
 
 export default function Gameview({ route,navigation }) {
   const { difficulty, id } = route.params;
@@ -18,19 +17,6 @@ export default function Gameview({ route,navigation }) {
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [correctDialogVisible, setCorrectDialogVisible] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const dataPieChart = [
-    {
-      key: 1,
-      value: score,
-      svg: { fill: '#009432' },
-    },
-    {
-      key: 2,
-      value: 100 - score,
-      svg: { fill: '#a0a0a0' },
-    },
-  ];
 
   // Permet de mélanger les réponses pour ne pas avoir la bonne réponse en dernier en utilisant l'algorithme de Fisher-Yates
   // https://www.youtube.com/watch?v=60A-G7irEqI
@@ -63,13 +49,7 @@ export default function Gameview({ route,navigation }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const storeScore = async (value) => {
-    try {
-      await AsyncStorage.setItem("score", JSON.stringify(value));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
 
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
@@ -85,7 +65,6 @@ export default function Gameview({ route,navigation }) {
       setCorrectAnswer(questions[currentQuestion].correct_answer);
     }
     setCurrentQuestion(currentQuestion + 1);
-    storeScore(score);
     setSelectedAnswer(null); 
   };
 
@@ -157,11 +136,7 @@ export default function Gameview({ route,navigation }) {
           )}
         </View>
       ) : (
-        <View>
-          <Text style={style.title}>Résultats</Text>
-          <PieChart style={style.pieChart} data={dataPieChart} />
-          <Text style={style.containerResult}>Votre score : {score} /100</Text>
-        </View>
+        <Result score={score}></Result>
       )}
 
 <Dialog.Container visible={correctDialogVisible}>
