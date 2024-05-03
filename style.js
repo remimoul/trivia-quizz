@@ -116,4 +116,10 @@ export default StyleSheet.create({
     textAlign: "center",
     marginTop: 50,
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#4834d4",
+  },
 });

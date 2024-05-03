@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { Text, SafeAreaView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import style from '../style.js';
 
 export default function Category({ navigation, route }) {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://opentdb.com/api_category.php')
       .then((response) => response.json())
-      .then((data) => setCategories(data.trivia_categories))
+      .then((data) => {setCategories(data.trivia_categories);
+        setLoading(false);
+      })
       .catch((error) => console.error(error));
   }, []);
 
@@ -34,6 +37,14 @@ export default function Category({ navigation, route }) {
       difficulty: route.params.difficulty,
     });
   };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={style.loading}>
+        <ActivityIndicator size="large" color="#fbc531" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <>

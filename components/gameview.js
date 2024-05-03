@@ -43,7 +43,7 @@ export default function Gameview({ route, navigation }) {
           }));
           setQuestions(questions);
         } else {
-          console.error('Unexpected data structure:', json);
+          console.error('Erreur fetch API:', json);
         }
       })
       .catch((error) => console.error(error))
