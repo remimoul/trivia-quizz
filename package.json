@@ -15,7 +15,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
-    "expo": "~50.0.17",
+    "expo": "^51.0.5",
     "expo-status-bar": "~1.11.1",
     "he": "^1.2.0",
     "npx": "^10.2.2",
