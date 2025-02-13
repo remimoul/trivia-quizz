@@ -35,4 +35,4 @@ Ce projet utilise les bibliothèques suivantes :
 
 ## Contact 📲
 
-Si vous souhaitez me contacter, vous pouvez m'envoyer un email à [votre email](mailto:remi.moul@my-digital-school.org) ou me suivre sur [LinkedIn](#).
+Si vous souhaitez me contacter, vous pouvez m'envoyer un email à [remi.moul@my-digital-school.org](mailto:remi.moul@my-digital-school.org).
